@@ -1,0 +1,16 @@
+#include "mbed.h"
+AnalogIn LDR(A0);
+DigitalOut LED(D7);
+
+int main(){
+    while(1){
+    float temp = LDR;
+    int voltage = temp*10000 ;
+    printf("voltage is %d\n",voltage);
+    thread_sleep_for(1000);
+    if (voltage >200)
+    {
+        //start the AHC thread
+    }
+    }
+}

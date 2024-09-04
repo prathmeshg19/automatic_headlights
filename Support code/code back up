@@ -1,0 +1,86 @@
+#include "mbed.h"
+#include "GPS.h"
+
+//------------------------------------
+// Hyperterminal configuration
+// 9600 bauds, 8-bit data, no parity
+//------------------------------------
+
+//BufferedSerial pc(SERIAL_TX, SERIAL_RX);
+GPS gps(D1,D0);
+//Serial gps(PC_10, PC_11);
+DigitalOut myled(LED3);
+
+int main()
+{
+    /*
+    int i = 1;
+    pc.printf("Hello World !\n");
+    while(1) {
+        wait(1);
+        pc.printf("This program runs since %d seconds.\n", i++);
+        myled = !myled;
+    }
+    */
+    
+    /*
+    while (true)
+    {
+        //int c = gps.getc();
+        //pc.printf("%c", c);   
+                // transfer data from pc to gps
+        if (pc.readable() && gps.writeable())
+            gps.putc(pc.getc());
+        // transfer data from gps to pc
+        if (gps.readable() && pc.writeable())
+            pc.putc(gps.getc()); 
+    }*/
+    /*
+    while (true)
+    {
+        //double lat  = gps.latitude();
+        //double lon = gps.longitude();
+        //double alt  = gps.altitude();
+        //GPS_Time t;
+        //gps->timeNow(&t);
+        //pc.printf("%02d:%02d:%02d %02d/%02d/%04d\r\n", 
+            //t.hour, t.minute, t.second, t.day, t.month, t.year);
+        if (gps.sample() == 1)
+            pc.printf("Success\n");
+        else
+            pc.printf("Failed\n");
+    }
+    */
+   
+    while(1) 
+    {
+        if(gps.sample() == 1) 
+        {
+             myled = 1;
+            float latitude = gps.latitude;
+            float longitude = gps.longitude;
+            float utc = gps.utc+50000;
+            printf("Updating the location");
+            printf("latitude: %0.2f, longitude: %0.2f, utc: %f\r\n",latitude,longitude,utc);
+            wait_us(1000);
+        } else 
+        {
+            myled = 0;
+            printf("Not getting GPS\n");
+        }
+    }  
+}
+
+/*#include <mbed.h>
+DigitalOut LED(LED3);
+int main(){
+    while(1)
+    {
+        LED = 0;
+        printf("abra ka dabra");
+        thread_sleep_for(50);
+        LED = 1;
+
+        thread_sleep_for(50);
+    }
+}*/
